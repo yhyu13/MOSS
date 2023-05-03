@@ -1,0 +1,2 @@
+cp ./models/custom_autotune.py ~/.cache/huggingface/modules/transformers_modules/local/
+cp ./model/moss-moon-003-sft-plugin-int4/custom_autotune.py ~/.cache/huggingface/modules/transformers_modules/moss-moon-003-sft-plugin-int4/
