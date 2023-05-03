@@ -1,25 +1,25 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 import torch
 import warnings
 import platform
+import argparse
 
 from huggingface_hub import snapshot_download
 from transformers.generation.utils import logger
 from accelerate import init_empty_weights, load_checkpoint_and_dispatch
-try:
-    from transformers import MossForCausalLM, MossTokenizer
-except (ImportError, ModuleNotFoundError):
-    from models.modeling_moss import MossForCausalLM
-    from models.tokenization_moss import MossTokenizer
-    from models.configuration_moss import MossConfig
-
 from transformers import AutoTokenizer, AutoModelForCausalLM
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--model_name", default="./model/moss-moon-003-sft-plugin-int4", type=str)
+parser.add_argument("--gpu", default="1", type=str)
+args = parser.parse_args()
+
+os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
 logger.setLevel("ERROR")
 warnings.filterwarnings("ignore")
 
-model_path = "./model/moss-moon-003-sft-plugin-int4"
+model_path = args.model_name
 
 print("Waiting for all devices to be ready, it may take a few minutes...")
 tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
